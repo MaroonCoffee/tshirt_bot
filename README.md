@@ -1,3 +1,5 @@
+# T-Shirt Bot
+
 Simple email bot I made to automatically email colleges to give me free stuff. Mostly for t-shirts.
 
 You can find the latest release of the program [here](https://github.com/erose524/tshirt_bot/releases)
