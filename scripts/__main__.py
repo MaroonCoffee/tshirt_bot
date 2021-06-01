@@ -9,13 +9,14 @@ import datetime
 
 
 def get_message(full_name, short_name):
-    message = open('message.txt', 'r')
+    message = open('message.txt', 'r', encoding='utf-8')
     text = message.read()
+    texts = text.split("\n", 1)
+    subject = texts[0]
+    text = texts[1]
     text = text.replace("[College Name]", full_name)
     text = text.replace("[Short College Name]", short_name)
-    text = text.encode('cp1252')
-    text = text.decode('utf-8')
-    return text
+    return [subject, text]
 
 
 def send_email(subject, sender, receiver, msg, password):
@@ -44,72 +45,86 @@ def get_time_stamp():
     return time_code
 
 
-def main():
+def prompt_handler(prompt, yes='y', no='n'):
+    while True:
+        usr_input = input(prompt)
+        if usr_input == yes:
+            return True
+        elif usr_input == no:
+            return False
+        else:
+            print("Invalid option!")
+
+
+def initialize_email():
     message_file = open('message.txt', 'a+')
     message_file.close()
-    while True:
-        sender_email = input("Enter your email address: ")
-        password = getpass("Enter your email password: ")
-        while True:
-            request_confirmation = input("Would you like to confirm the credentials you have supplied? (y/n): ")
-            if request_confirmation == "y" or request_confirmation == "n":
-                break
-            else:
-                print("Invalid option!")
-        if request_confirmation == "y":
-            confirmation_address = input("Enter the address you'd like to confirm with: ")
-            print("Sending confirmation...")
-            subject = "Confirmation Email"
-            body = "Your credentials are valid."
-            send_email(subject, sender_email, confirmation_address, body, password)
-            print("Confirmation email sent!")
-            while True:
-                confirmation = input("Did you receive a confirmation email? (y/n): ")
-                if confirmation == "y" or confirmation == "n":
-                    break
-                else:
-                    print("Invalid option!")
-            if confirmation == "y":
-                break
-            else:
-                print("Restarting email process...")
-        if request_confirmation == "n":
-            break
-    while True:
-        while True:
-            receiver_email = input("Address to be sent to: ")
-            full_name = input("Full name of college: ")
-            short_name = input("Abbreviated name of college: ")
-            while True:
-                confirmation = input("Send this email? (Type 'Send' or 'n'): ")
-                if confirmation == "Send" or confirmation == 'n':
-                    break
-                else:
-                    print("Invalid option!")
-            if confirmation == 'Send':
-                break
-            else:
-                print("Restarting email...")
-        text = get_message(full_name, short_name)
-        subject = "Perspective Student Computer Science Major"
-        send_email(subject, sender_email, receiver_email, text, password)
+    sender_email = input("Enter your email address: ")
+    password = getpass("Enter your email password: ")
+    prompt = "Would you like to confirm the credentials you have supplied? (y/n): "
+    request_confirmation = prompt_handler(prompt)
+    if request_confirmation:
+        send_confirmation(sender_email, password)
+    else:
+        detail_email(sender_email, password)
 
-        logs = open('logs.txt', 'a+')
-        time_code = get_time_stamp()
-        log_message = time_code + " - " + short_name + ": " + receiver_email + "\n"
-        logs.write(log_message)
-        logs.close()
 
-        print("Message successfully sent!")
-        while True:
-            restart = input("Would you like to send another email? (y/n): ")
-            if restart == "y" or restart == "n":
-                break
-            else:
-                print("Invalid option!")
-        if restart == "n":
-            break
-    print("Check the logs folder for a list of the colleges you've emailed :)")
+def send_confirmation(sender_email, password):
+    confirmation_address = input("Enter the address you'd like to confirm with: ")
+    print("Sending confirmation...")
+    subject = "Confirmation Email"
+    body = "Your credentials are valid."
+    send_email(subject, sender_email, confirmation_address, body, password)
+    print("Confirmation email sent!")
+    prompt = "Did you receive a confirmation email? (y/n): "
+    confirmation = prompt_handler(prompt)
+    if confirmation:
+        detail_email(sender_email, password)
+    else:
+        print("Restarting email process...")
+        initialize_email()
+
+
+def detail_email(sender_email, password):
+    print("Now enter the information associated with the college you'd like to email.")
+    receiver_email = input("Address to be sent to: ")
+    full_name = input("Full name of college: ")
+    short_name = input("Abbreviated name of college: ")
+    prompt = "Send this email? (Type 'Send' or 'n'): "
+    confirmation = prompt_handler(prompt, 'Send')
+    if confirmation:
+        finalize_email(sender_email, receiver_email, password, full_name, short_name)
+    else:
+        print("Restarting email...")
+        detail_email(sender_email, password)
+
+
+def write_logs(short_name, receiver_email):
+    logs = open('logs.txt', 'a+')
+    time_code = get_time_stamp()
+    log_message = time_code + " - " + short_name + ": " + receiver_email + "\n"
+    logs.write(log_message)
+    logs.close()
+
+
+def finalize_email(sender_email, receiver_email, password, full_name, short_name):
+    texts = get_message(full_name, short_name)
+    subject = texts[0]
+    text = texts[1]
+    send_email(subject, sender_email, receiver_email, text, password)
+    print("Message successfully sent!")
+    write_logs(short_name, receiver_email)
+    print("College information logged! (logs.txt)")
+    prompt = "Would you like to send another email? (y/n): "
+    restart = prompt_handler(prompt)
+    if restart:
+        detail_email()
+    else:
+        print("Exiting program...")
+
+
+def main():
+    initialize_email()
 
 
 if __name__ == '__main__':
