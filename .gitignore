@@ -1,0 +1,9 @@
+venv/
+.idea/
+__pycache__/
+build/
+dist/
+scripts/*
+!scripts/__main__.py
+*.spec
+build_command.txt
