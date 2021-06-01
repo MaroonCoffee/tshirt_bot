@@ -16,8 +16,18 @@ Gmail users with 2fa enabled have to make an app password in order for their acc
 
 ## Using the program
 1. You will want to keep the executable in its own folder as it will create text documents you will need for the program to run correctly.
-2. To supply the program with the email you want to send, open the message.txt file (created on program startup the first time) or create one if it's not already there.
-3. The first line of this document will be the subject of the email you're sending. After the first line break (enter), all text in the document will be read as the body of the email you're sending. It is important that you test this message out by sending it to yourself through the program before attempting to send it to colleges.
-4. After sending your first email using the program, a file called logs.txt will save the name and email of the college you messaged. Make sure to record this information to avoid accidentally messaging the same college twice.
 ### For users with 2fa enabled
 When the program asks for your password, type your app password as your regular password will not work.
+### Setting up message.txt
+1. To supply the program with the email you want to send, open the message.txt file (created on program startup the first time) or create one if it's not already there.
+2. The first line of this document will be the subject of the email you're sending. After the first line break (enter), all text in the document will be read as the body of the email you're sending. 
+3. Your message can be customized through the use of two tags, \[College Name\] and \[Short College Name\]. By inserting those tags throughout your message, you can make your email appear personalized for the college you're emailing. 
+ * For example, by typing 
+   * "\[College Name\] is the best university! Go \[Short College Name\]!"
+ * and supplying the following names into the program
+   * "Harvard University" and "Harvard"
+ * your email will be sent like this
+   * "Harvard University is the best university! Go Harvard!"
+4. Finally, it is important that you test this message out by sending it to yourself through the program before attempting to send it to colleges.
+### Using logs.txt
+After sending your first email using the program, a file called logs.txt will save the name and email of the college you messaged. Make sure to record this information to avoid accidentally messaging the same college twice.
