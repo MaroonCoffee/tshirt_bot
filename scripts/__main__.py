@@ -11,11 +11,11 @@ import datetime
 def get_message(full_name, short_name):
     message = open('message.txt', 'r', encoding='utf-8')
     text = message.read()
+    text = text.replace("[College Name]", full_name)
+    text = text.replace("[Short College Name]", short_name)
     texts = text.split("\n", 1)
     subject = texts[0]
     text = texts[1]
-    text = text.replace("[College Name]", full_name)
-    text = text.replace("[Short College Name]", short_name)
     return [subject, text]
 
 
@@ -118,14 +118,14 @@ def finalize_email(sender_email, receiver_email, password, full_name, short_name
     prompt = "Would you like to send another email? (y/n): "
     restart = prompt_handler(prompt)
     if restart:
-        detail_email()
+        detail_email(sender_email, password)
     else:
         print("Exiting program...")
 
 
 def main():
     print("----------------------------------------------------")
-    print("T-ShirtBot v.1.1 Copyright (c) 2021 Elijah Rosen")
+    print("T-ShirtBot v.1.1.1 Copyright (c) 2021 Elijah Rosen")
     print("----------------------------------------------------")
     initialize_email()
 
