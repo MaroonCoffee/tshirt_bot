@@ -124,6 +124,9 @@ def finalize_email(sender_email, receiver_email, password, full_name, short_name
 
 
 def main():
+    print("----------------------------------------------------")
+    print("T-ShirtBot v.1.1 Copyright (c) 2021 Elijah Rosen")
+    print("----------------------------------------------------")
     initialize_email()
 
 
