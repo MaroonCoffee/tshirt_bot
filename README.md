@@ -1,6 +1,8 @@
 Simple email bot I made to automatically email colleges to give me free stuff. Mostly for t-shirts.
 
-[This](https://freecollegeshirts.weebly.com/) is a great resource to find out how to get started as well as which colleges are most likely to send you shirts back.
+You can find the latest release of the program [here](https://github.com/erose524/tshirt_bot/releases)
+
+[This website](https://freecollegeshirts.weebly.com/) is a great resource to find out how to get started as well as which colleges are most likely to send you shirts back.
 
 ## Setting up your Gmail to work with the program
 1. Create a Gmail account [here](https://accounts.google.com/SignUp) if you don't already have one. You may want to make a new one regardless for sending emails with the program as you'll see below.
