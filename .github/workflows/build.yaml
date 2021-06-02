@@ -1,0 +1,25 @@
+on: [workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: [3.9.5]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install requirements
+        run: python -m pip install -r requirements.txt
+      - name: Install build requirements
+        run: python -m pip install pyinstaller
+      - name: Build distribution
+        run: pyinstaller cli.py --name T-ShirtBot --onefile
+      - uses: actions/upload-artifact@v2
+        with:
+          name: dist ${{ matrix.os }}
+          path: dist
