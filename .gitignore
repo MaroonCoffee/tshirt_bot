@@ -7,3 +7,4 @@ scripts/*
 !scripts/__main__.py
 *.spec
 *.txt
+!requirements.txt
